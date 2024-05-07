@@ -11,6 +11,20 @@ $userID = $_SESSION["userID"];
   $r1 = mysqli_query($link, $sql1);
   $row = mysqli_fetch_array($r1, MYSQLI_ASSOC);
 
+  $total=$row['points'];
+    // Assign the award given based on their total
+    if ($total >= 70) {
+      $award = "Gold";
+  } elseif ($total >= 50) {
+      $award = "Silver";
+  } else {
+      $award = "Bronze";
+  }
+
+ // Update the award in the database
+$q = "UPDATE companyinfo SET award = '$award' WHERE userID = '$userID'";
+$r = mysqli_query($link, $q);
+
   if (mysqli_num_rows($r1) == 0) {
     // Redirect to account.php if user is not found
     echo '<script>alert("Please add points to view award.");</script>';
@@ -59,7 +73,7 @@ $userID = $_SESSION["userID"];
 <!-- Card for users recieving an award which will display their company name, their company award level and points gained and the date of award -->
 <?php 
 
-if ($row['award']=="Bronze") {
+if ($award=="Bronze") {
   echo'<style>
   .award-card {
     border: 10px solid #CD7F32; 
@@ -70,7 +84,7 @@ if ($row['award']=="Bronze") {
   }
 </style>';
 }
-if ($row['award']=="Silver") {
+if ($award=="Silver") {
   echo'<style>
   .award-card {
     border: 10px solid #C0C0C0; 
@@ -81,7 +95,7 @@ if ($row['award']=="Silver") {
   }
 </style>';
 }
-if ($row['award']=="Gold") {
+if ($award=="Gold") {
   echo'<style>
   .award-card {
     border: 10px solid #ffd700; 
