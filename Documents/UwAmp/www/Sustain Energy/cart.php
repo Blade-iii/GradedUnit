@@ -30,6 +30,8 @@ if (!empty($_POST["userCsv"])) {
     if ($row2["cardCsv"] == $_POST["userCsv"]) {
         // Retrieve selected points from the form
         $selectedPoints = $_POST["points"];
+        $row1 = mysqli_fetch_array($r1, MYSQLI_ASSOC);
+        $companyID = $row1['companyID'];
 
         $sql = "INSERT INTO companyinfo (userID, companyID, points) 
         VALUES ('$id', '$companyID', '$selectedPoints') 
