@@ -30,8 +30,6 @@ if (!empty($_POST["userCsv"])) {
     if ($row2["cardCsv"] == $_POST["userCsv"]) {
         // Retrieve selected points from the form
         $selectedPoints = $_POST["points"];
-        $row1 = mysqli_fetch_array($r1, MYSQLI_ASSOC);
-        $companyID = $row1['companyID'];
 
         $sql = "INSERT INTO companyinfo (userID, companyID, points) 
         VALUES ('$id', '$companyID', '$selectedPoints') 
@@ -152,17 +150,21 @@ $maxPoints = min(100, $totalPointsNeeded);
         <label for="points">Select the number of points to purchase:</label>
         <!-- Dropdown menu for selecting the quantity of points -->
         <select id="points" name="points" required onchange="updateTotal()">
-            <?php 
-            // Loop to generate options in intervals of 10 points
-            for ($i = 10; $i <= $maxPoints; $i += 10) { 
-                ?>
-                <!-- Option for interval of 10 -->
-                <option value="<?php echo $i; ?>"><?php echo $i; ?> points</option>
-            <?php } ?>
-            <?php if ($totalPointsNeeded > 10) { ?>
-                <!-- Additional option for remaining points if greater than 10 -->
-                <option value="<?php echo $totalPointsNeeded; ?>"><?php echo $totalPointsNeeded; ?> points</option>
-            <?php } ?>
+        <?php 
+        // Loop to generate options in intervals of 10 points
+        for ($i = 10; $i <= $maxPoints; $i += 10) { 
+        ?>
+        <!-- Option for interval of 10 -->
+    <option value="<?php echo $i; ?>"><?php echo $i; ?> points</option>
+<?php 
+}
+// Additional option for remaining points if greater than 10
+if ($totalPointsNeeded > 10 && $totalPointsNeeded != $maxPoints) { 
+    ?>
+    <option value="<?php echo $totalPointsNeeded; ?>"><?php echo $totalPointsNeeded; ?> points</option>
+<?php 
+} 
+?>
         </select>
         <br><br>
         <label for="userCsv" class="form-label">CSV:</label>
